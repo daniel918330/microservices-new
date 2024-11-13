@@ -16,9 +16,9 @@ public class OrderController {
 
     // Add Employee REST API with POST mapping and request body
     @PostMapping
-    public ResponseEntity<OrderDto> createEmployee(@RequestBody OrderDto orderDto) {
-        OrderDto savedOrder = orderService.placeOrder(orderDto);
-        return new ResponseEntity<>(savedOrder, HttpStatus.CREATED);
+    public ResponseEntity<Void> createOrder(@RequestBody OrderDto orderDto) {
+        orderService.placeOrder(orderDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> getOrder(@PathVariable Long id){

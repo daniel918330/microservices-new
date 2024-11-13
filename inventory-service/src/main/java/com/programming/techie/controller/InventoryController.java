@@ -24,7 +24,7 @@ public class InventoryController {
     // Build Get All Inventory REST API
     @GetMapping("/isInStock")
     public ResponseEntity<List<InventoryDto>> isInStock(@RequestParam("skuCode") List<String> skuCode) {
-        List<InventoryDto> inventory = inventoryService.isInStock(skuCode);
+        List<InventoryDto> inventory = inventoryService.checkInventory(skuCode);
         return ResponseEntity.ok(inventory);
     }
 }

@@ -5,5 +5,5 @@ import com.programming.techie.dto.InventoryDto;
 import java.util.List;
 
 public interface InventoryService {
-    List<InventoryDto> isInStock(List<String> SkuCode);
+    List<InventoryDto> checkInventory(List<String> SkuCode);
 }
