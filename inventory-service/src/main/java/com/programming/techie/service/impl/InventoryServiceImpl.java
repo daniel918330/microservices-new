@@ -19,8 +19,10 @@ public class InventoryServiceImpl implements InventoryService {
     private InventoryRepository inventoryRepository;
 
     @Transactional(readOnly = true)
-    public boolean isInStock(String skuCode) {
-        return inventoryRepository.findBySkuCode(skuCode).isPresent();
+    public List<InventoryDto> isInStock(List<String> skuCode){
+        List<Inventory> inventory = inventoryRepository.findBySkuCodeIn(skuCode);
+        return inventory.stream().map((InventoryMapper::mapToInventoryDto))
+                .collect(Collectors.toList());
     }
 }
 

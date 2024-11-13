@@ -22,9 +22,9 @@ public class InventoryController {
     }
 
     // Build Get All Inventory REST API
-    @GetMapping("/{skuCode}")
-    public ResponseEntity<Boolean> isInStock(@PathVariable("skuCode") String skuCode) {
-        boolean isStock= inventoryService.isInStock(skuCode);
-        return new ResponseEntity<Boolean>(isStock, HttpStatus.OK);
+    @GetMapping("/isInStock")
+    public ResponseEntity<List<InventoryDto>> isInStock(@RequestParam("skuCode") List<String> skuCode) {
+        List<InventoryDto> inventory = inventoryService.isInStock(skuCode);
+        return ResponseEntity.ok(inventory);
     }
 }
