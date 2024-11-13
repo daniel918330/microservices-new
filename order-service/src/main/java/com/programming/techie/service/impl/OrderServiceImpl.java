@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderLineItemsRepository orderLineItemsRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     @Transactional
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("Requesting inventory data for SKU Codes: " + skuCodes);
 
         // 构建请求 URL，添加 SKU 代码作为查询参数
-        String url = UriComponentsBuilder.fromHttpUrl("http://localhost:9092/api/inventory/isInStock")
+        String url = UriComponentsBuilder.fromHttpUrl("http://inventory-service/api/inventory/isInStock")
                 .queryParam("skuCode", skuCodes.toArray(new String[0]))  // 将 SKU 代码作为查询参数传递
                 .toUriString();  // 获取最终的 URL 字符串
 
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("Requesting URL: " + url);
 
         // 使用 WebClient 发送请求并获取库存数据
-        InventoryDto[] inventoryDtoArray = webClient.get()
+        InventoryDto[] inventoryDtoArray = webClientBuilder.build().get()
                 .uri(url)  // 使用构建好的 URL 发起请求
                 .retrieve()
                 .bodyToMono(InventoryDto[].class)
