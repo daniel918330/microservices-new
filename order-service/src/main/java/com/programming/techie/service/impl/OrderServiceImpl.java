@@ -59,6 +59,9 @@ public class OrderServiceImpl implements OrderService {
 
         // 打印请求的 SKU 代码
         System.out.println("Requesting inventory data for SKU Codes: " + skuCodes);
+        if (skuCodes.isEmpty()) {
+            throw new IllegalArgumentException("No SKU codes found for order items.");
+        }
 
         // 构建请求 URL，添加 SKU 代码作为查询参数
         String url = UriComponentsBuilder.fromHttpUrl("http://inventory-service/api/inventory/isInStock")
