@@ -1,6 +1,5 @@
 package com.programming.techie.service.impl;
 
-//import com.programming.techie.exception.ResourceNotFoundException;
 import com.programming.techie.dto.InventoryDto;
 import com.programming.techie.dto.OrderDto;
 import com.programming.techie.entity.Order;
@@ -37,7 +36,8 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("OrderLineItems List: " + order.getOrderLineItems());
 
         // 生成订单号
-        order.setOrderNumber(UUID.randomUUID().toString());
+        String orderNumber = UUID.randomUUID().toString();
+        order.setOrderNumber(orderNumber);
 
         // 计算总数量和总价格
         order.setTotalQuantity(order.getOrderLineItems()
@@ -97,8 +97,12 @@ public class OrderServiceImpl implements OrderService {
 
         if (allProductInStock) {
             System.out.println("All products are in stock. Proceeding with order creation.");
+
+            // 记录保存订单日志
+            System.out.println("Attempting to save order with orderNumber: " + orderNumber);
             // 保存主订单
             Order savedOrder = orderRepository.save(order);
+            System.out.println("Order saved successfully with ID: " + savedOrder.getId());
         } else {
             System.out.println("Some products are not in stock. Cannot place order.");
             throw new IllegalArgumentException("One or more products are out of stock.");
@@ -106,10 +110,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto getOrderById(Long id){
+    public OrderDto getOrderById(Long id) {
         Optional<Order> order = orderRepository.findById(id);
         return order.map(OrderMapper::mapToOrderDto)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 }
-
